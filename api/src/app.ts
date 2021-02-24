@@ -1,6 +1,7 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import shortUrlsRouter from "./routes/shortUrls/router";
 
 const app: Application = express();
 
@@ -12,6 +13,8 @@ app.use(helmet());
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Hello!" });
 });
+
+app.use("/v1/short-urls", shortUrlsRouter);
 
 // 404 route for all
 app.use((req: Request, res: Response) => {
