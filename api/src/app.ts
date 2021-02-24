@@ -4,6 +4,8 @@ import helmet from "helmet";
 import shortUrlsRouter from "./routes/shortUrls/router";
 import rootRouter from "./routes/root/router";
 
+export const STORAGE_PATH = "storage/shortUrls.json";
+
 const app: Application = express();
 
 app.use(cors());
