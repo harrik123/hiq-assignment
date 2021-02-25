@@ -3,9 +3,11 @@ dotenv.config();
 import http from "http";
 import app from "./app";
 
-const port = process.env.PORT || "4000";
-app.set("port", port);
+const PORT = process.env.PORT || "4000";
+app.set("port", PORT);
+
+export const API_URL = process.env.API_URL || `http://localhost:${PORT}`;
 
 // Create HTTP server.
 const server = http.createServer(app);
-server.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));

@@ -2,10 +2,11 @@ import express, { Request, Response, NextFunction } from "express";
 import fsPromises from "fs/promises";
 import { nanoid } from "nanoid";
 import { KEY_MAX_LENGTH, STORAGE_PATH } from "../../app";
+import { API_URL } from "../../server";
 import { IShortUrlItem } from "../../ts/interfaces";
 import { validatePostParams } from "./validation";
 
-// Routes for "/v1/short-urls"
+export const V1_SHORT_URLS = "/v1/short-urls";
 const shortUrlsRouter = express.Router();
 
 shortUrlsRouter.get(
@@ -28,7 +29,11 @@ shortUrlsRouter.get(
       return res.status(200).json({ message: "Shortened url is expired." });
     }
 
-    return res.status(200).json({ data: storedItem.url });
+    return res.status(200).json({
+      data: {
+        originalUrl: storedItem.url,
+      },
+    });
   }
 );
 
@@ -68,7 +73,11 @@ shortUrlsRouter.post(
 
     try {
       await fsPromises.writeFile(STORAGE_PATH, JSON.stringify(storedItems));
-      return res.status(200).json({ data: newItem });
+      return res.status(200).json({
+        data: {
+          shortUrl: `${API_URL}${V1_SHORT_URLS}/${newItem.key}`,
+        },
+      });
     } catch (err) {
       return res.status(500).json({ message: "Something went wrong." });
     }
