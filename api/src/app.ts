@@ -5,6 +5,7 @@ import shortUrlsRouter from "./routes/shortUrls/router";
 import rootRouter from "./routes/root/router";
 
 export const STORAGE_PATH = "storage/shortUrls.json";
+export const KEY_MAX_LENGTH = 16;
 
 const app: Application = express();
 

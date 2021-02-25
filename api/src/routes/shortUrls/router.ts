@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import fsPromises from "fs/promises";
 import { nanoid } from "nanoid";
-import { STORAGE_PATH } from "../../app";
+import { KEY_MAX_LENGTH, STORAGE_PATH } from "../../app";
 import { IShortUrlItem } from "../../ts/interfaces";
 import { validatePostParams } from "./validation";
 
@@ -9,7 +9,7 @@ import { validatePostParams } from "./validation";
 const shortUrlsRouter = express.Router();
 
 shortUrlsRouter.get("/:key", (req: Request, res: Response) => {
-  return res.status(200).json({ message: "Getti success" });
+    return res.status(200).json({ message: "Getti success" });
 });
 
 /**
@@ -28,7 +28,7 @@ shortUrlsRouter.post(
     }
 
     const newItem: IShortUrlItem = {
-      key: nanoid(16),
+      key: nanoid(KEY_MAX_LENGTH),
       url: req.body.url,
       created: new Date().toISOString(),
     };
