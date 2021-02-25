@@ -3,6 +3,7 @@ import fsPromises from "fs/promises";
 import { nanoid } from "nanoid";
 import { API_URL, KEY_MAX_LENGTH, STORAGE_PATH } from "../../app";
 import { IShortUrlItem } from "../../ts/interfaces";
+import { getStoredItems, isShortUrlStillValid } from "../../utils/functions";
 import { validatePostParams } from "./validation";
 
 export const V1_SHORT_URLS = "/v1/short-urls";
@@ -35,17 +36,6 @@ shortUrlsRouter.get(
     });
   }
 );
-
-/**
- * Check that shortened url is not older than 7 days
- *
- */
-export function isShortUrlStillValid(item: IShortUrlItem) {
-  const createdWeekAgo = new Date();
-  createdWeekAgo.setDate(createdWeekAgo.getDate() - 7);
-
-  return new Date(item.created) > createdWeekAgo;
-}
 
 /**
  * Create new shortened url
@@ -82,25 +72,5 @@ shortUrlsRouter.post(
     }
   }
 );
-
-async function getStoredItems() {
-  let storedItems: IShortUrlItem[];
-  try {
-    const dataFromStorage: string = await fsPromises.readFile(
-      STORAGE_PATH,
-      "utf8"
-    );
-    storedItems = JSON.parse(dataFromStorage);
-  } catch (err) {
-    if (err.code === "ENOENT") {
-      // File doesn't exist yet
-      storedItems = [];
-    } else {
-      throw new Error("Something went wrong.");
-    }
-  }
-
-  return storedItems;
-}
 
 export default shortUrlsRouter;
