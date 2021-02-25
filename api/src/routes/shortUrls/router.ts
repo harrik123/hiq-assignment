@@ -1,8 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import fsPromises from "fs/promises";
 import { nanoid } from "nanoid";
-import { KEY_MAX_LENGTH, STORAGE_PATH } from "../../app";
-import { API_URL } from "../../server";
+import { API_URL, KEY_MAX_LENGTH, STORAGE_PATH } from "../../app";
 import { IShortUrlItem } from "../../ts/interfaces";
 import { validatePostParams } from "./validation";
 

@@ -4,6 +4,7 @@ import helmet from "helmet";
 import shortUrlsRouter, { V1_SHORT_URLS } from "./routes/shortUrls/router";
 import rootRouter from "./routes/root/router";
 
+export const API_URL = process.env.API_URL || `http://localhost:4000`;
 export const STORAGE_PATH = "storage/shortUrls.json";
 export const KEY_MAX_LENGTH = 16;
 
