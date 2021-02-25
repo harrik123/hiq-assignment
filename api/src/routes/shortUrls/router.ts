@@ -8,9 +8,40 @@ import { validatePostParams } from "./validation";
 // Routes for "/v1/short-urls"
 const shortUrlsRouter = express.Router();
 
-shortUrlsRouter.get("/:key", (req: Request, res: Response) => {
-    return res.status(200).json({ message: "Getti success" });
-});
+shortUrlsRouter.get(
+  "/:key",
+  async (req: Request, res: Response, next: NextFunction) => {
+    let storedItems: IShortUrlItem[];
+    try {
+      storedItems = await getStoredItems();
+    } catch (err) {
+      return next(err);
+    }
+
+    const storedItem = storedItems.find((item) => item.key === req.params.key);
+
+    if (!storedItem) {
+      return res.status(200).json({ message: "Shortened url not found." });
+    }
+
+    if (!isShortUrlStillValid(storedItem)) {
+      return res.status(200).json({ message: "Shortened url is expired." });
+    }
+
+    return res.status(200).json({ data: storedItem.url });
+  }
+);
+
+/**
+ * Check that shortened url is not older than 7 days
+ *
+ */
+function isShortUrlStillValid(item: IShortUrlItem) {
+  var createdWeekAgo = new Date();
+  createdWeekAgo.setDate(createdWeekAgo.getDate() - 7);
+
+  return new Date(item.created) > createdWeekAgo;
+}
 
 /**
  * Create new shortened url
