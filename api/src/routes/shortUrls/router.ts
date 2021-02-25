@@ -40,8 +40,8 @@ shortUrlsRouter.get(
  * Check that shortened url is not older than 7 days
  *
  */
-function isShortUrlStillValid(item: IShortUrlItem) {
-  var createdWeekAgo = new Date();
+export function isShortUrlStillValid(item: IShortUrlItem) {
+  const createdWeekAgo = new Date();
   createdWeekAgo.setDate(createdWeekAgo.getDate() - 7);
 
   return new Date(item.created) > createdWeekAgo;
