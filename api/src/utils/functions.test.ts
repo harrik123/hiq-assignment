@@ -49,13 +49,13 @@ test("Url created less than a week ago", () => {
 });
 
 function testUrlIsValid(days: number, expected: boolean) {
-  const createdOverWeekAgo = new Date();
-  createdOverWeekAgo.setDate(createdOverWeekAgo.getDate() - days);
+  const createdDate = new Date();
+  createdDate.setDate(createdDate.getDate() - days);
 
   const item: IShortUrlItem = {
     key: "asd",
     url: "asd.com",
-    created: createdOverWeekAgo.toISOString(),
+    created: createdDate.toISOString(),
   };
 
   expect(isShortUrlStillValid(item)).toBe(expected);
